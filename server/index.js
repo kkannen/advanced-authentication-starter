@@ -10,7 +10,7 @@ const authenticationRoutes = require("./routes/AuthenticationRoutes");
 
 mongoose.set("debug", true);
 mongoose.Promise = global.Promise;
-mongoose.connect("mongodb://jwoo:jwoo@ds147668.mlab.com:47668/aca-test");
+mongoose.connect("mongodb://audiomuse:Nbs76gf$@ds157667.mlab.com:57667/authentication-practice");
 
 const app = express();
 

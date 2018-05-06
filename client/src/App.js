@@ -4,6 +4,9 @@ import "./App.css";
 import SignUpSignIn from "./SignUpSignIn";
 import TopNavbar from "./TopNavbar";
 import Secret from "./Secret";
+import Cats from "./components/Cats";
+import Dogs from "./components/Dogs";
+import Bunnies from "./components/Bunnies";
 
 class App extends Component {
   constructor() {
@@ -23,8 +26,12 @@ class App extends Component {
       this.setState({
         signUpSignInError: "Must Provide All Fields"
       });
-    } else {
-
+    } else if (confirmPassword !== password) {
+      this.setState({
+        signUpSignInError: "The Passwords Do Not Match"
+      }); 
+      } else {
+        
       fetch("/users", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
@@ -42,9 +49,62 @@ class App extends Component {
     }
   }
 
+
+
+
   handleSignIn(credentials) {
-    // Handle Sign Up
+    const { username, password, confirmPassword } = credentials;
+    if (!username.trim() || !password.trim()) {
+      this.setState({
+        signUpSignInError: "Must Provide All Fields"
+      });
+    } else {
+      fetch("/api/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials)
+      }).then((res) => {
+        if (res.status === 401) {
+          return this.setState({
+            signUpSignInError: "Invalid login"
+          });
+        }
+        return res.json();
+      })
+      .then((data) => {
+        const { token } = data;
+        localStorage.setItem("token", token);
+        this.setState({
+          signUpSignInError: "",
+          authenticated: token
+        });
+      });
+    }
   }
+
+//   handleSignIn(credentials) {
+//     const { username, password } = credentials;
+//     if (!username.trim() || !password.trim() ) {
+//       this.setState({
+//         signUpSignInError: "Must Provide All Fields"
+//       });
+//     } else {
+
+//       fetch("/api/signin", {
+//         method: "POST",
+//         headers: {"Content-Type": "application/json"},
+//         body: JSON.stringify(credentials)
+//       }).then((res) => {
+//         if (res.status === 401) {
+//           this.setState({
+//             signUpSignInError: "Invalid login"
+//           });
+//         } else {
+//         return res.json();
+//     }
+//   });
+// }
+//   }
 
   handleSignOut() {
     localStorage.removeItem("token");
@@ -58,6 +118,7 @@ class App extends Component {
       <SignUpSignIn 
         error={this.state.signUpSignInError} 
         onSignUp={this.handleSignUp} 
+        onSignIn={this.handleSignIn}
       />
     );
   }
@@ -68,6 +129,9 @@ class App extends Component {
         <Switch>
           <Route exact path="/" render={() => <h1>I am protected!</h1>} />
           <Route exact path="/secret" component={Secret} />
+          <Route exact path="/dogs" component={Dogs} />
+          <Route exact path="/cats" component={Cats} />
+          <Route exact path="/bunnies" component={Bunnies} />
           <Route render={() => <h1>NOT FOUND!</h1>} />
         </Switch>
       </div>
@@ -96,3 +160,4 @@ class App extends Component {
 }
 
 export default App;
+
