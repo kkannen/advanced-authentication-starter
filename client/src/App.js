@@ -82,30 +82,6 @@ class App extends Component {
     }
   }
 
-//   handleSignIn(credentials) {
-//     const { username, password } = credentials;
-//     if (!username.trim() || !password.trim() ) {
-//       this.setState({
-//         signUpSignInError: "Must Provide All Fields"
-//       });
-//     } else {
-
-//       fetch("/api/signin", {
-//         method: "POST",
-//         headers: {"Content-Type": "application/json"},
-//         body: JSON.stringify(credentials)
-//       }).then((res) => {
-//         if (res.status === 401) {
-//           this.setState({
-//             signUpSignInError: "Invalid login"
-//           });
-//         } else {
-//         return res.json();
-//     }
-//   });
-// }
-//   }
-
   handleSignOut() {
     localStorage.removeItem("token");
     this.setState({
