@@ -53,7 +53,7 @@ class App extends Component {
 
 
   handleSignIn(credentials) {
-    const { username, password, confirmPassword } = credentials;
+    const { username, password } = credentials;
     if (!username.trim() || !password.trim()) {
       this.setState({
         signUpSignInError: "Must Provide All Fields"
